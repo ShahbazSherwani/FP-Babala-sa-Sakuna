@@ -9,9 +9,14 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert as AlertType, FilterOption } from '../../src/types';
-import { alertService } from '../../src/services';
-import { AlertCard, FilterChips } from '../../src/components';
+import { alertService, localizationService } from '../../src/services';
+import { notificationService } from '../../src/services/NotificationService';
+import { AlertCard, FilterChips, SeverityGuideModal, LanguageSwitcher } from '../../src/components';
+
+const SEVERITY_GUIDE_KEY = '@babala_severity_guide_shown';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -19,10 +24,43 @@ export default function DashboardScreen() {
   const [activeFilter, setActiveFilter] = useState<FilterOption>('all');
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showSeverityGuide, setShowSeverityGuide] = useState(false);
+  const [, forceUpdate] = useState(0);
 
   useEffect(() => {
     loadAlerts();
+    checkFirstLaunch();
+    setupNotificationListeners();
   }, []);
+
+  const checkFirstLaunch = async () => {
+    const hasSeenGuide = await AsyncStorage.getItem(SEVERITY_GUIDE_KEY);
+    if (!hasSeenGuide) {
+      // Show guide after a short delay for better UX
+      setTimeout(() => setShowSeverityGuide(true), 1000);
+    }
+  };
+
+  const setupNotificationListeners = () => {
+    if (notificationService.isAvailable()) {
+      // Handle notification tap
+      notificationService.addNotificationResponseListener((response) => {
+        const alertId = response.notification.request.content.data.alertId;
+        if (alertId) {
+          router.push(`/alert/${alertId}`);
+        }
+      });
+    }
+  };
+
+  const handleGuideClose = async () => {
+    setShowSeverityGuide(false);
+    await AsyncStorage.setItem(SEVERITY_GUIDE_KEY, 'true');
+  };
+
+  const handleLanguageChange = () => {
+    forceUpdate(prev => prev + 1);
+  };
 
   const loadAlerts = useCallback(() => {
     const data = alertService.getAlertsByCategory(activeFilter);
@@ -54,24 +92,35 @@ export default function DashboardScreen() {
   const renderHeader = () => (
     <View style={styles.headerContainer}>
       <View style={styles.header}>
-        <Text style={styles.appTitle}>Babala sa Sakuna</Text>
+        <Text style={styles.appTitle}>{localizationService.t('dashboard.title')}</Text>
         <Text style={styles.subtitle}>
-          {activeCount} Active {activeCount === 1 ? 'Alert' : 'Alerts'}
+          {activeCount} {localizationService.t(activeCount === 1 ? 'dashboard.activeAlert' : 'dashboard.activeAlerts')}
         </Text>
+      </View>
+      <View style={styles.languageContainer}>
+        <LanguageSwitcher onLanguageChange={handleLanguageChange} />
       </View>
       <FilterChips
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
       />
+      {!notificationService.isAvailable() && (
+        <View style={styles.infoBanner}>
+          <MaterialCommunityIcons name="information" size={16} color="#2563EB" />
+          <Text style={styles.infoBannerText}>
+            Push notifications require a development build
+          </Text>
+        </View>
+      )}
     </View>
   );
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
       <Text style={styles.emptyIcon}>✓</Text>
-      <Text style={styles.emptyTitle}>No Active Alerts</Text>
+      <Text style={styles.emptyTitle}>{localizationService.t('dashboard.noAlerts')}</Text>
       <Text style={styles.emptyText}>
-        No alerts match the selected filter. Try selecting a different category.
+        {localizationService.t('dashboard.noAlertsDesc')}
       </Text>
     </View>
   );
@@ -81,7 +130,7 @@ export default function DashboardScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#1E3A5F" />
-          <Text style={styles.loadingText}>Loading alerts...</Text>
+          <Text style={styles.loadingText}>{localizationService.t('dashboard.loadingAlerts')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -89,6 +138,10 @@ export default function DashboardScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
+      <SeverityGuideModal
+        visible={showSeverityGuide}
+        onClose={handleGuideClose}
+      />
       <FlatList
         data={alerts}
         keyExtractor={(item) => item.id}
@@ -128,6 +181,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 8,
+  },
+  languageContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 12,
+  },
+  infoBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#DBEAFE',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginHorizontal: 16,
+    marginTop: 8,
+    marginBottom: 4,
+    borderRadius: 6,
+    gap: 8,
+  },
+  infoBannerText: {
+    fontSize: 12,
+    color: '#1E40AF',
+    flex: 1,
   },
   appTitle: {
     fontSize: 26,

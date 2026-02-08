@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { FilterOption, HazardCategory } from '../types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { localizationService } from '../services/LocalizationService';
 
 interface FilterChipsProps {
   activeFilter: FilterOption;
@@ -16,16 +17,15 @@ interface FilterChipsProps {
 
 interface ChipData {
   key: FilterOption;
-  label: string;
   icon: string;
 }
 
 const CHIPS: ChipData[] = [
-  { key: 'all', label: 'All', icon: 'alert-circle' },
-  { key: 'typhoon', label: 'Typhoon', icon: 'weather-hurricane' },
-  { key: 'flood', label: 'Flood', icon: 'water' },
-  { key: 'earthquake', label: 'Earthquake', icon: 'earth' },
-  { key: 'volcano', label: 'Volcano', icon: 'fire' },
+  { key: 'all', icon: 'alert-circle' },
+  { key: 'typhoon', icon: 'weather-hurricane' },
+  { key: 'flood', icon: 'water' },
+  { key: 'earthquake', icon: 'earth' },
+  { key: 'volcano', icon: 'fire' },
 ];
 
 const FilterChips: React.FC<FilterChipsProps> = ({
@@ -41,6 +41,7 @@ const FilterChips: React.FC<FilterChipsProps> = ({
       >
         {CHIPS.map((chip) => {
           const isActive = activeFilter === chip.key;
+          const label = localizationService.t(`dashboard.filters.${chip.key}`);
           return (
             <TouchableOpacity
               key={chip.key}
@@ -54,7 +55,7 @@ const FilterChips: React.FC<FilterChipsProps> = ({
                 color={isActive ? '#FFFFFF' : '#6B7280'}
               />
               <Text style={[styles.chipText, isActive && styles.chipTextActive]}>
-                {chip.label}
+                {label}
               </Text>
             </TouchableOpacity>
           );

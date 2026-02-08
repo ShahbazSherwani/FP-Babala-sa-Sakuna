@@ -44,6 +44,16 @@
         {
           "locationWhenInUsePermission": "Allow Babala sa Sakuna to use your location to show nearby hazards."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/adaptive-icon.png",
+          "color": "#DC2626",
+          "sounds": [
+            "./assets/notification.wav"
+          ]
+        }
       ]
     ]
   }
