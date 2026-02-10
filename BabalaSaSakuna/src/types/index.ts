@@ -113,3 +113,129 @@ export const PRIORITY_COLORS: Record<PriorityLevel, string> = {
   medium: '#D97706',
   low: '#16A34A',
 };
+
+// --------------- Weather & PSI Types ---------------
+
+export type PSILevel = 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous';
+
+export interface WeatherData {
+  location: string;
+  temperature: number;
+  humidity: number;
+  rainfall: number;          // mm/hour
+  windSpeed: number;         // km/h
+  condition: string;         // "Clear", "Rainy", "Cloudy", etc.
+  lastUpdated: string;
+}
+
+export interface PSIData {
+  psiValue: number;
+  level: PSILevel;
+  location: string;
+  lastUpdated: string;
+  healthAdvice: string;
+}
+
+export const PSI_COLORS: Record<PSILevel, string> = {
+  good: '#16A34A',           // Green
+  moderate: '#D97706',       // Yellow
+  unhealthy: '#EA580C',      // Orange
+  very_unhealthy: '#DC2626', // Red
+  hazardous: '#7C2D12',      // Dark Red
+};
+
+export const PSI_RANGES: Record<PSILevel, { min: number; max: number }> = {
+  good: { min: 0, max: 50 },
+  moderate: { min: 51, max: 100 },
+  unhealthy: { min: 101, max: 200 },
+  very_unhealthy: { min: 201, max: 300 },
+  hazardous: { min: 301, max: 500 },
+};
+
+// --------------- Resource Hub Types ---------------
+
+export type ResourceType = 'shelter' | 'hospital' | 'fire_station' | 'police_station' | 'evacuation_center';
+
+export interface Resource {
+  id: string;
+  name: string;
+  type: ResourceType;
+  address: string;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
+  phone?: string;
+  capacity?: number;         // For shelters/evacuation centers
+  services: string[];
+  isOperational: boolean;
+  operational24_7?: boolean; // 24/7 availability
+  distance?: number;         // Distance from user in km
+}
+
+export const RESOURCE_ICONS: Record<ResourceType, string> = {
+  shelter: 'home-account',
+  hospital: 'hospital-box',
+  fire_station: 'fire-truck',
+  police_station: 'shield-account',
+  evacuation_center: 'tent',
+};
+
+export const RESOURCE_COLORS: Record<ResourceType, string> = {
+  shelter: '#2563EB',
+  hospital: '#DC2626',
+  fire_station: '#EA580C',
+  police_station: '#1E40AF',
+  evacuation_center: '#16A34A',
+};
+
+// --------------- Missions & Badges Types ---------------
+
+export type MissionStatus = 'locked' | 'available' | 'in_progress' | 'completed';
+
+export type BadgeCategory = 'preparedness' | 'knowledge' | 'community' | 'survival';
+
+export interface Quiz {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: number;     // Index of correct option
+  explanation: string;
+}
+
+export interface Mission {
+  id: string;
+  title: string;
+  description: string;
+  category: BadgeCategory;
+  pointsReward: number;
+  quizzes: Quiz[];
+  requiredScore: number;     // Minimum correct answers to pass
+  status: MissionStatus;
+  completedAt?: string;
+}
+
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  category: BadgeCategory;
+  icon: string;
+  isEarned: boolean;
+  earnedAt?: string;
+  missionId: string;
+}
+
+export interface UserProgress {
+  totalPoints: number;
+  completedMissions: number;
+  earnedBadges: number;
+  level: number;
+}
+
+export const BADGE_COLORS: Record<BadgeCategory, string> = {
+  preparedness: '#2563EB',
+  knowledge: '#7C3AED',
+  community: '#16A34A',
+  survival: '#EA580C',
+};

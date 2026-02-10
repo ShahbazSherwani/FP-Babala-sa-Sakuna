@@ -1,21 +1,35 @@
 {
   "name": "fp-babala-sa-sakuna",
   "version": "1.0.0",
-  "description": "",
+  "description": "CM3070 Final Project - Philippine Disaster Warning Mobile Application (React Native + Expo)",
   "main": "index.js",
   "dependencies": {
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "^5.4.296"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd BabalaSaSakuna && npx expo start",
+    "android": "cd BabalaSaSakuna && npx expo run:android",
+    "ios": "cd BabalaSaSakuna && npx expo run:ios"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ShahbazSherwani/FP-Babala-sa-Sakuna.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "disaster-warning",
+    "philippines",
+    "react-native",
+    "expo",
+    "mobile-app",
+    "emergency",
+    "typhoon",
+    "earthquake",
+    "CM3070",
+    "final-project"
+  ],
+  "author": "Shahbaz Sherwani",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {

@@ -39,6 +39,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="weather"
+        options={{
+          title: 'Weather',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="weather-partly-cloudy" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="map"
         options={{
           title: localizationService.t('tabs.map'),
@@ -48,11 +57,29 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="resources"
+        options={{
+          title: 'Resources',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="map-marker-multiple" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="checklist"
         options={{
           title: localizationService.t('tabs.checklist'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="clipboard-check" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="missions"
+        options={{
+          title: 'Missions',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="trophy" size={size} color={color} />
           ),
         }}
       />
