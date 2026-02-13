@@ -14,6 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.babalasasakuna.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Babala sa Sakuna needs your location to show nearby disaster alerts and resources.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Babala sa Sakuna needs your location to send you timely disaster alerts even when the app is closed.",
+        "NSCameraUsageDescription": "Babala sa Sakuna needs camera access to let you take photos for community reports.",
+        "NSPhotoLibraryUsageDescription": "Babala sa Sakuna needs access to your photo library to attach images to reports.",
+        "NSMicrophoneUsageDescription": "Babala sa Sakuna may need microphone access for video reports."
+      },
       "config": {
         "googleMapsApiKey": "YOUR_GOOGLE_MAPS_API_KEY"
       }
@@ -23,6 +31,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       },
+      "package": "com.babalasasakuna.app",
       "config": {
         "googleMaps": {
           "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
@@ -30,7 +39,16 @@
       },
       "permissions": [
         "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "WAKE_LOCK",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
       ]
     },
     "web": {
@@ -42,7 +60,8 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Allow Babala sa Sakuna to use your location to show nearby hazards."
+          "locationWhenInUsePermission": "Allow Babala sa Sakuna to use your location to show nearby hazards and resources.",
+          "locationAlwaysAndWhenInUsePermission": "Allow Babala sa Sakuna to send you timely disaster alerts based on your location."
         }
       ],
       [
@@ -52,7 +71,8 @@
           "color": "#DC2626",
           "sounds": [
             "./assets/notification.wav"
-          ]
+          ],
+          "mode": "production"
         }
       ]
     ]

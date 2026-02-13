@@ -1,5 +1,6 @@
 import { Resource, ResourceType } from '../types';
 import { RESOURCES } from '../data/resources';
+import { locationService, Coordinates } from './LocationService';
 
 export class ResourceService {
   private static instance: ResourceService;
@@ -47,7 +48,7 @@ export class ResourceService {
   }
 
   /**
-   * Calculate distance between two coordinates (Haversine formula)
+   * Calculate distance using LocationService
    */
   private calculateDistance(
     lat1: number,
@@ -55,21 +56,28 @@ export class ResourceService {
     lat2: number,
     lon2: number
   ): number {
-    const R = 6371; // Earth's radius in kilometers
-    const dLat = this.toRad(lat2 - lat1);
-    const dLon = this.toRad(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.toRad(lat1)) *
-        Math.cos(this.toRad(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    return locationService.calculateDistance(
+      { latitude: lat1, longitude: lon1 },
+      { latitude: lat2, longitude: lon2 }
+    );
   }
 
-  private toRad(degrees: number): number {
-    return degrees * (Math.PI / 180);
+  /**
+   * Get distance to a resource from user's location
+   */
+  async getDistanceToResource(resourceId: string): Promise<number | null> {
+    const resource = this.getResourceById(resourceId);
+    if (!resource) return null;
+
+    const userLocation = await locationService.getCurrentLocation();
+    if (!userLocation) return null;
+
+    return this.calculateDistance(
+      userLocation.latitude,
+      userLocation.longitude,
+      resource.coordinates.latitude,
+      resource.coordinates.longitude
+    );
   }
 
   /**
@@ -80,19 +88,26 @@ export class ResourceService {
     longitude: number,
     limit: number = 5
   ): Array<Resource & { distance: number }> {
-    const resourcesWithDistance = RESOURCES.map(resource => ({
-      ...resource,
-      distance: this.calculateDistance(
-        latitude,
-        longitude,
-        resource.coordinates.latitude,
-        resource.coordinates.longitude
-      ),
-    }));
-
-    return resourcesWithDistance
-      .sort((a, b) => a.distance - b.distance)
+    return locationService
+      .sortByDistance({ latitude, longitude }, RESOURCES)
       .slice(0, limit);
+  }
+
+  /**
+   * Get nearest resources from user's current location
+   */
+  async getNearestResourcesFromUser(limit: number = 5): Promise<Array<Resource & { distance: number }>> {
+    const userLocation = await locationService.getCurrentLocation();
+    if (!userLocation) {
+      // Return resources without distance sorting
+      return RESOURCES.slice(0, limit).map(r => ({ ...r, distance: 0 }));
+    }
+
+    return this.getNearestResources(
+      userLocation.latitude,
+      userLocation.longitude,
+      limit
+    );
   }
 
   /**
@@ -105,19 +120,30 @@ export class ResourceService {
     limit: number = 3
   ): Array<Resource & { distance: number }> {
     const resourcesOfType = this.getResourcesByType(type);
-    const resourcesWithDistance = resourcesOfType.map(resource => ({
-      ...resource,
-      distance: this.calculateDistance(
-        latitude,
-        longitude,
-        resource.coordinates.latitude,
-        resource.coordinates.longitude
-      ),
-    }));
-
-    return resourcesWithDistance
-      .sort((a, b) => a.distance - b.distance)
+    return locationService
+      .sortByDistance({ latitude, longitude }, resourcesOfType)
       .slice(0, limit);
+  }
+
+  /**
+   * Get nearest resources of specific type from user location
+   */
+  async getNearestResourcesByTypeFromUser(
+    type: ResourceType,
+    limit: number = 3
+  ): Promise<Array<Resource & { distance: number }>> {
+    const userLocation = await locationService.getCurrentLocation();
+    if (!userLocation) {
+      const resourcesOfType = this.getResourcesByType(type);
+      return resourcesOfType.slice(0, limit).map(r => ({ ...r, distance: 0 }));
+    }
+
+    return this.getNearestResourcesByType(
+      type,
+      userLocation.latitude,
+      userLocation.longitude,
+      limit
+    );
   }
 
   /**
