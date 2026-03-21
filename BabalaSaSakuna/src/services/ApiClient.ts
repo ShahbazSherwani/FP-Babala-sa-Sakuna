@@ -88,6 +88,14 @@ class ApiClient {
       const response = await requestFn();
       return response.data;
     } catch (error: any) {
+      // Don't retry on 401 (bad key) or 403 (forbidden) — retrying won't help
+      const status = error?.response?.status;
+      if (status === 401 || status === 403) {
+        console.warn(
+          `[API] Auth error ${status} — check your API key. Returning null to trigger fallback.`
+        );
+        return null as unknown as T;
+      }
       if (retryCount < this.maxRetries && this.shouldRetry(error)) {
         console.log(`[API] Retrying request (${retryCount + 1}/${this.maxRetries})...`);
         await this.delay(1000 * (retryCount + 1)); // Exponential backoff
@@ -202,11 +210,11 @@ export class AirQualityApiClient extends ApiClient {
 
   /**
    * Get air quality by coordinates
+   * Correct WAQI URL: https://api.waqi.info/feed/geo:{lat};{lon}/?token=TOKEN
    */
   async getAirQuality(lat: number, lon: number) {
-    return this.get('/feed/geo', {
+    return this.get(`/feed/geo:${lat};${lon}/`, {
       params: {
-        latlng: `${lat},${lon}`,
         token: this.apiKey,
       },
     });

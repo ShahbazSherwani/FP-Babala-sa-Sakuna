@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AuthProvider } from '../src/contexts/AuthContext';
 import { localizationService } from '../src/services';
 import { notificationService } from '../src/services/NotificationService';
+import { alertPollingService } from '../src/services/AlertPollingService';
 
 export default function RootLayout() {
   useEffect(() => {
@@ -11,9 +12,14 @@ export default function RootLayout() {
     const initServices = async () => {
       await localizationService.init();
       await notificationService.init();
+      await alertPollingService.init(); // start weather alert polling
     };
 
     initServices();
+
+    return () => {
+      alertPollingService.stop();
+    };
   }, []);
 
   return (

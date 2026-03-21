@@ -12,6 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MissionCard, BadgeDisplay } from '../../src/components';
 import { missionService } from '../../src/services';
 import { Mission, Badge, UserProgress, Quiz } from '../../src/types';
+import { localizationService } from '../../src/services/LocalizationService';
 
 export default function MissionsScreen() {
   const [missions, setMissions] = useState<Mission[]>([]);
@@ -76,9 +77,9 @@ export default function MissionsScreen() {
 
     if (result.success) {
       Alert.alert(
-        '🎉 Mission Complete!',
-        `You earned ${result.pointsEarned} points!${
-          result.badge ? `\n\nBadge Unlocked: ${result.badge.name}` : ''
+        localizationService.t('missions.missionComplete'),
+        `${localizationService.t('missions.youEarned')} ${result.pointsEarned} ${localizationService.t('missions.pointsLabel')}${
+          result.badge ? `\n\n${localizationService.t('missions.badgeUnlocked')}: ${result.badge.name}` : ''
         }`,
         [
           {
@@ -92,11 +93,11 @@ export default function MissionsScreen() {
       );
     } else {
       Alert.alert(
-        'Mission Failed',
-        `You need at least ${selectedMission.requiredScore} correct answers to pass. Try again!`,
+        localizationService.t('missions.missionFailed'),
+        `${localizationService.t('missions.needMore')} ${selectedMission.requiredScore} ${localizationService.t('missions.correctAnswers')}`,
         [
           {
-            text: 'Retry',
+            text: localizationService.t('missions.retry'),
             onPress: () => startMission(selectedMission),
           },
           {
@@ -124,10 +125,10 @@ export default function MissionsScreen() {
               color={quizResults.passed ? '#10b981' : '#ef4444'}
             />
             <Text style={styles.resultsTitle}>
-              {quizResults.passed ? 'Great Job!' : 'Keep Learning!'}
+              {quizResults.passed ? localizationService.t('missions.greatJob') : localizationService.t('missions.keepLearning')}
             </Text>
             <Text style={styles.resultsScore}>
-              Score: {quizResults.score} / {quizResults.total}
+              {localizationService.t('missions.score')}: {quizResults.score} / {quizResults.total}
             </Text>
           </View>
 
@@ -140,7 +141,7 @@ export default function MissionsScreen() {
                     size={20}
                     color={quizResults.results[index].correct ? '#10b981' : '#ef4444'}
                   />
-                  <Text style={styles.resultQuestion}>Question {index + 1}</Text>
+                  <Text style={styles.resultQuestion}>{localizationService.t('missions.question')} {index + 1}</Text>
                 </View>
                 <Text style={styles.resultExplanation}>
                   {quizResults.results[index].explanation}
@@ -155,7 +156,7 @@ export default function MissionsScreen() {
                 style={[styles.button, styles.buttonPrimary]}
                 onPress={completeMission}
               >
-                <Text style={styles.buttonText}>Complete Mission</Text>
+                <Text style={styles.buttonText}>{localizationService.t('missions.completeMission')}</Text>
               </TouchableOpacity>
             ) : (
               <>
@@ -163,13 +164,13 @@ export default function MissionsScreen() {
                   style={[styles.button, styles.buttonSecondary]}
                   onPress={() => setSelectedMission(null)}
                 >
-                  <Text style={styles.buttonTextSecondary}>Cancel</Text>
+                  <Text style={styles.buttonTextSecondary}>{localizationService.t('cancel')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.button, styles.buttonPrimary]}
                   onPress={() => startMission(selectedMission)}
                 >
-                  <Text style={styles.buttonText}>Try Again</Text>
+                  <Text style={styles.buttonText}>{localizationService.t('missions.tryAgain')}</Text>
                 </TouchableOpacity>
               </>
             )}
@@ -182,7 +183,7 @@ export default function MissionsScreen() {
       <View style={styles.quizContainer}>
         <View style={styles.quizHeader}>
           <Text style={styles.quizProgress}>
-            Question {currentQuestionIndex + 1} of {selectedMission.quizzes.length}
+            {localizationService.t('missions.question')} {currentQuestionIndex + 1} {localizationService.t('missions.of')} {selectedMission.quizzes.length}
           </Text>
           <TouchableOpacity onPress={() => setSelectedMission(null)}>
             <MaterialCommunityIcons name="close" size={24} color="#64748b" />
@@ -216,22 +217,22 @@ export default function MissionsScreen() {
       <View style={styles.header}>
         <View style={styles.titleRow}>
           <MaterialCommunityIcons name="trophy" size={32} color="#f59e0b" />
-          <Text style={styles.title}>Missions & Badges</Text>
+          <Text style={styles.title}>{localizationService.t('missions.title')}</Text>
         </View>
         {progress && (
           <View style={styles.progressBar}>
             <View style={styles.progressInfo}>
-              <Text style={styles.progressLevel}>Level {progress.level}</Text>
-              <Text style={styles.progressPoints}>{progress.totalPoints} points</Text>
+              <Text style={styles.progressLevel}>{localizationService.t('missions.level')} {progress.level}</Text>
+              <Text style={styles.progressPoints}>{progress.totalPoints} {localizationService.t('missions.points')}</Text>
             </View>
             <View style={styles.progressStats}>
               <View style={styles.stat}>
                 <MaterialCommunityIcons name="check-circle" size={16} color="#10b981" />
-                <Text style={styles.statText}>{progress.completedMissions} missions</Text>
+                <Text style={styles.statText}>{progress.completedMissions} {localizationService.t('missions.missionsLabel')}</Text>
               </View>
               <View style={styles.stat}>
                 <MaterialCommunityIcons name="shield-star" size={16} color="#f59e0b" />
-                <Text style={styles.statText}>{progress.earnedBadges} badges</Text>
+                <Text style={styles.statText}>{progress.earnedBadges} {localizationService.t('missions.badgesLabel')}</Text>
               </View>
             </View>
           </View>
@@ -241,7 +242,7 @@ export default function MissionsScreen() {
       <ScrollView style={styles.content}>
         {/* Badges Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Your Badges</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('missions.yourBadges')}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -255,7 +256,7 @@ export default function MissionsScreen() {
 
         {/* Missions Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Available Missions</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('missions.availableMissions')}</Text>
           {missions.map((mission) => (
             <MissionCard
               key={mission.id}

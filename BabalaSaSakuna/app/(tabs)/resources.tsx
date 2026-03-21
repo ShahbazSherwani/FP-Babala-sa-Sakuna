@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ResourceCard } from '../../src/components';
 import { resourceService } from '../../src/services';
 import { Resource, ResourceType } from '../../src/types';
+import { localizationService } from '../../src/services/LocalizationService';
 
 export default function ResourcesScreen() {
   const [resources, setResources] = useState<Resource[]>([]);
@@ -28,12 +29,12 @@ export default function ResourcesScreen() {
   };
 
   const resourceTypes: Array<{ type: ResourceType | 'all'; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }> = [
-    { type: 'all', label: 'All', icon: 'view-grid' },
-    { type: 'shelter', label: 'Shelters', icon: 'home-roof' },
-    { type: 'evacuation_center', label: 'Evacuation', icon: 'run' },
-    { type: 'hospital', label: 'Hospitals', icon: 'hospital-box' },
-    { type: 'fire_station', label: 'Fire', icon: 'fire-truck' },
-    { type: 'police_station', label: 'Police', icon: 'shield-account' },
+    { type: 'all', label: localizationService.t('resources.filterAll'), icon: 'view-grid' },
+    { type: 'shelter', label: localizationService.t('resources.filterShelters'), icon: 'home-roof' },
+    { type: 'evacuation_center', label: localizationService.t('resources.filterEvacuation'), icon: 'run' },
+    { type: 'hospital', label: localizationService.t('resources.filterHospitals'), icon: 'hospital-box' },
+    { type: 'fire_station', label: localizationService.t('resources.filterFire'), icon: 'fire-truck' },
+    { type: 'police_station', label: localizationService.t('resources.filterPolice'), icon: 'shield-account' },
   ];
 
   return (
@@ -41,10 +42,10 @@ export default function ResourcesScreen() {
       <View style={styles.header}>
         <View style={styles.titleRow}>
           <MaterialCommunityIcons name="map-marker-multiple" size={32} color="#2563eb" />
-          <Text style={styles.title}>Resource Hub</Text>
+          <Text style={styles.title}>{localizationService.t('resources.title')}</Text>
         </View>
         <Text style={styles.subtitle}>
-          Find emergency services and shelters near you
+          {localizationService.t('resources.subtitle')}
         </Text>
       </View>
 
@@ -85,7 +86,7 @@ export default function ResourcesScreen() {
       <ScrollView style={styles.listContainer}>
         <View style={styles.resultHeader}>
           <Text style={styles.resultCount}>
-            {resources.length} {resources.length === 1 ? 'resource' : 'resources'} found
+            {resources.length} {resources.length === 1 ? localizationService.t('resources.resourceFound') : localizationService.t('resources.resourcesFound')}
           </Text>
         </View>
 
@@ -98,9 +99,9 @@ export default function ResourcesScreen() {
         ) : (
           <View style={styles.emptyState}>
             <MaterialCommunityIcons name="map-marker-off" size={64} color="#cbd5e1" />
-            <Text style={styles.emptyTitle}>No resources found</Text>
+            <Text style={styles.emptyTitle}>{localizationService.t('resources.noResources')}</Text>
             <Text style={styles.emptyText}>
-              Try selecting a different category
+              {localizationService.t('resources.noResourcesDesc')}
             </Text>
           </View>
         )}
@@ -109,7 +110,7 @@ export default function ResourcesScreen() {
         <View style={styles.infoBox}>
           <MaterialCommunityIcons name="information" size={20} color="#2563eb" />
           <Text style={styles.infoText}>
-            Tap "Call" to contact directly or "Directions" to navigate using your maps app.
+            {localizationService.t('resources.infoTip')}
           </Text>
         </View>
       </ScrollView>

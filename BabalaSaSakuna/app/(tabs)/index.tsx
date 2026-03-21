@@ -11,6 +11,7 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
 import { Alert as AlertType, FilterOption } from '../../src/types';
 import { alertService, localizationService } from '../../src/services';
 import { notificationService } from '../../src/services/NotificationService';
@@ -98,6 +99,12 @@ export default function DashboardScreen() {
         </Text>
       </View>
       <View style={styles.languageContainer}>
+        <TouchableOpacity
+          onPress={() => router.push('/auth/login')}
+          style={{ marginRight: 12 }}
+        >
+          <MaterialCommunityIcons name="account-circle" size={28} color="#2563eb" />
+        </TouchableOpacity>
         <LanguageSwitcher onLanguageChange={handleLanguageChange} />
       </View>
       <FilterChips
