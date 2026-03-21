@@ -14,6 +14,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/contexts/AuthContext';
+import { localizationService } from '../../src/services';
 
 export default function SignUpScreen() {
   const [displayName, setDisplayName] = useState('');
@@ -29,24 +30,24 @@ export default function SignUpScreen() {
 
   const validateInputs = (): string | null => {
     if (!displayName || !email || !password || !confirmPassword) {
-      return 'Please fill in all fields';
+      return localizationService.t('auth.fillAllFields');
     }
 
     if (displayName.length < 2) {
-      return 'Name must be at least 2 characters';
+      return localizationService.t('auth.nameTooShort');
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return 'Please enter a valid email address';
+      return localizationService.t('auth.validEmail');
     }
 
     if (password.length < 6) {
-      return 'Password must be at least 6 characters';
+      return localizationService.t('auth.passwordTooShort');
     }
 
     if (password !== confirmPassword) {
-      return 'Passwords do not match';
+      return localizationService.t('auth.passwordsNoMatch');
     }
 
     return null;
@@ -55,7 +56,7 @@ export default function SignUpScreen() {
   const handleSignUp = async () => {
     const error = validateInputs();
     if (error) {
-      Alert.alert('Validation Error', error);
+      Alert.alert(localizationService.t('auth.validationError'), error);
       return;
     }
 
@@ -65,12 +66,12 @@ export default function SignUpScreen() {
 
     if (result.success) {
       Alert.alert(
-        'Welcome!',
-        'Your account has been created successfully',
+        localizationService.t('auth.welcome'),
+        localizationService.t('auth.accountCreated'),
         [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
       );
     } else {
-      Alert.alert('Sign Up Failed', result.error || 'Unable to create account');
+      Alert.alert(localizationService.t('auth.signUpFailed'), result.error || localizationService.t('auth.unableCreateAccount'));
     }
   };
 
@@ -88,8 +89,8 @@ export default function SignUpScreen() {
           <TouchableOpacity onPress={handleBackToLogin} style={styles.backButton}>
             <MaterialCommunityIcons name="arrow-left" size={24} color="#2563eb" />
           </TouchableOpacity>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join Babala sa Sakuna community</Text>
+          <Text style={styles.title}>{localizationService.t('auth.createAccount')}</Text>
+          <Text style={styles.subtitle}>{localizationService.t('auth.joinCommunity')}</Text>
         </View>
 
         <View style={styles.form}>
@@ -97,7 +98,7 @@ export default function SignUpScreen() {
             <MaterialCommunityIcons name="account" size={20} color="#64748b" />
             <TextInput
               style={styles.input}
-              placeholder="Full Name"
+              placeholder={localizationService.t('auth.fullName')}
               placeholderTextColor="#94a3b8"
               value={displayName}
               onChangeText={setDisplayName}
@@ -109,7 +110,7 @@ export default function SignUpScreen() {
             <MaterialCommunityIcons name="email" size={20} color="#64748b" />
             <TextInput
               style={styles.input}
-              placeholder="Email"
+              placeholder={localizationService.t('auth.email')}
               placeholderTextColor="#94a3b8"
               value={email}
               onChangeText={setEmail}
@@ -123,7 +124,7 @@ export default function SignUpScreen() {
             <MaterialCommunityIcons name="lock" size={20} color="#64748b" />
             <TextInput
               style={styles.input}
-              placeholder="Password (min. 6 characters)"
+              placeholder={localizationService.t('auth.passwordMin')}
               placeholderTextColor="#94a3b8"
               value={password}
               onChangeText={setPassword}
@@ -143,7 +144,7 @@ export default function SignUpScreen() {
             <MaterialCommunityIcons name="lock-check" size={20} color="#64748b" />
             <TextInput
               style={styles.input}
-              placeholder="Confirm Password"
+              placeholder={localizationService.t('auth.confirmPassword')}
               placeholderTextColor="#94a3b8"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
@@ -161,9 +162,9 @@ export default function SignUpScreen() {
 
           <View style={styles.termsContainer}>
             <Text style={styles.termsText}>
-              By signing up, you agree to our{' '}
-              <Text style={styles.termsLink}>Terms of Service</Text> and{' '}
-              <Text style={styles.termsLink}>Privacy Policy</Text>
+              {localizationService.t('auth.termsPrefix')}
+              <Text style={styles.termsLink}>{localizationService.t('auth.termsOfService')}</Text>{localizationService.t('auth.and')}
+              <Text style={styles.termsLink}>{localizationService.t('auth.privacyPolicy')}</Text>
             </Text>
           </View>
 
@@ -175,14 +176,14 @@ export default function SignUpScreen() {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.signupButtonText}>Create Account</Text>
+              <Text style={styles.signupButtonText}>{localizationService.t('auth.createAccount')}</Text>
             )}
           </TouchableOpacity>
 
           <View style={styles.loginContainer}>
-            <Text style={styles.loginText}>Already have an account? </Text>
+            <Text style={styles.loginText}>{localizationService.t('auth.hasAccount')} </Text>
             <TouchableOpacity onPress={handleBackToLogin}>
-              <Text style={styles.loginLink}>Sign In</Text>
+              <Text style={styles.loginLink}>{localizationService.t('auth.signIn')}</Text>
             </TouchableOpacity>
           </View>
         </View>

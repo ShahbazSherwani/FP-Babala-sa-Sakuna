@@ -14,6 +14,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/contexts/AuthContext';
+import { localizationService } from '../../src/services';
 
 export default function ResetPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -25,13 +26,13 @@ export default function ResetPasswordScreen() {
 
   const handleResetPassword = async () => {
     if (!email) {
-      Alert.alert('Error', 'Please enter your email address');
+      Alert.alert(localizationService.t('auth.error'), localizationService.t('auth.enterEmail'));
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
+      Alert.alert(localizationService.t('auth.error'), localizationService.t('auth.validEmail'));
       return;
     }
 
@@ -42,7 +43,7 @@ export default function ResetPasswordScreen() {
     if (result.success) {
       setEmailSent(true);
     } else {
-      Alert.alert('Error', result.error || 'Unable to send reset email');
+      Alert.alert(localizationService.t('auth.error'), result.error || localizationService.t('auth.unableSendReset'));
     }
   };
 
@@ -55,18 +56,17 @@ export default function ResetPasswordScreen() {
       <View style={styles.container}>
         <View style={styles.successContainer}>
           <MaterialCommunityIcons name="email-check" size={80} color="#10b981" />
-          <Text style={styles.successTitle}>Check Your Email</Text>
+          <Text style={styles.successTitle}>{localizationService.t('auth.checkEmail')}</Text>
           <Text style={styles.successText}>
-            We've sent password reset instructions to
+            {localizationService.t('auth.sentInstructions')}
           </Text>
           <Text style={styles.emailText}>{email}</Text>
           <Text style={styles.successSubtext}>
-            Click the link in the email to reset your password. If you don't see it,
-            check your spam folder.
+            {localizationService.t('auth.checkSpam')}
           </Text>
 
           <TouchableOpacity style={styles.backButton} onPress={handleBackToLogin}>
-            <Text style={styles.backButtonText}>Back to Sign In</Text>
+            <Text style={styles.backButtonText}>{localizationService.t('auth.backToSignIn')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -76,7 +76,7 @@ export default function ResetPasswordScreen() {
               setEmail('');
             }}
           >
-            <Text style={styles.resendButtonText}>Try Different Email</Text>
+            <Text style={styles.resendButtonText}>{localizationService.t('auth.tryDifferentEmail')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -100,10 +100,9 @@ export default function ResetPasswordScreen() {
             color="#2563eb"
             style={styles.icon}
           />
-          <Text style={styles.title}>Reset Password</Text>
+          <Text style={styles.title}>{localizationService.t('auth.resetPassword')}</Text>
           <Text style={styles.subtitle}>
-            Enter your email address and we'll send you instructions to reset your
-            password
+            {localizationService.t('auth.resetSubtitle')}
           </Text>
         </View>
 
@@ -112,7 +111,7 @@ export default function ResetPasswordScreen() {
             <MaterialCommunityIcons name="email" size={20} color="#64748b" />
             <TextInput
               style={styles.input}
-              placeholder="Email"
+              placeholder={localizationService.t('auth.email')}
               placeholderTextColor="#94a3b8"
               value={email}
               onChangeText={setEmail}
@@ -131,14 +130,14 @@ export default function ResetPasswordScreen() {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.resetButtonText}>Send Reset Link</Text>
+              <Text style={styles.resetButtonText}>{localizationService.t('auth.sendResetLink')}</Text>
             )}
           </TouchableOpacity>
 
           <View style={styles.loginContainer}>
-            <Text style={styles.loginText}>Remember your password? </Text>
+            <Text style={styles.loginText}>{localizationService.t('auth.rememberPassword')}</Text>
             <TouchableOpacity onPress={handleBackToLogin}>
-              <Text style={styles.loginLink}>Sign In</Text>
+              <Text style={styles.loginLink}>{localizationService.t('auth.signIn')}</Text>
             </TouchableOpacity>
           </View>
         </View>

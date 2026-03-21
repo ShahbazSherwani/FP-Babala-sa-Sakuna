@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert as AlertType, SEVERITY_COLORS, CATEGORY_ICONS, SeverityLevel } from '../../src/types';
-import { alertService } from '../../src/services';
+import { alertService, localizationService } from '../../src/services';
 import SeverityBadge from '../../src/components/SeverityBadge';
 
 const { width } = Dimensions.get('window');
@@ -134,7 +134,7 @@ export default function HazardMapScreen() {
         <View style={styles.zoneDetails}>
           <View style={styles.zoneDetailItem}>
             <MaterialCommunityIcons name="radius-outline" size={14} color="#6B7280" />
-            <Text style={styles.zoneDetailText}>{item.radiusKm} km radius</Text>
+            <Text style={styles.zoneDetailText}>{item.radiusKm} {localizationService.t('map.radius')}</Text>
           </View>
           <View style={styles.zoneDetailItem}>
             <MaterialCommunityIcons name="map-marker" size={14} color="#6B7280" />
@@ -156,7 +156,7 @@ export default function HazardMapScreen() {
   // ---- Legend component (shared) ----
   const renderLegend = (floating: boolean) => (
     <View style={floating ? styles.legendFloat : styles.legendInline}>
-      <Text style={styles.legendTitle}>Risk Level</Text>
+      <Text style={styles.legendTitle}>{localizationService.t('map.riskLevel')}</Text>
       <View style={floating ? styles.legendItemsCol : styles.legendItemsRow}>
         {(['critical', 'high', 'medium', 'low'] as const).map((level) => (
           <View key={level} style={styles.legendItem}>
@@ -174,9 +174,9 @@ export default function HazardMapScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Hazard Map</Text>
+        <Text style={styles.headerTitle}>{localizationService.t('map.title')}</Text>
         <Text style={styles.headerSubtitle}>
-          {alerts.length} active hazard zones
+          {alerts.length} {localizationService.t(alerts.length === 1 ? 'map.hazardZone' : 'map.hazardZones')}
         </Text>
       </View>
 
@@ -241,7 +241,7 @@ export default function HazardMapScreen() {
                 style={styles.closeSheetBtn}
                 onPress={() => setSelectedAlert(null)}
               >
-                <Text style={styles.closeSheetText}>Close</Text>
+                <Text style={styles.closeSheetText}>{localizationService.t('close')}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -252,7 +252,7 @@ export default function HazardMapScreen() {
           <View style={styles.fallbackBanner}>
             <MaterialCommunityIcons name="map-marker-radius" size={20} color="#1E3A5F" />
             <Text style={styles.fallbackBannerText}>
-              Hazard zone list view — native map requires a development build
+              {localizationService.t('map.fallbackBanner')}
             </Text>
           </View>
           {renderLegend(false)}

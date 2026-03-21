@@ -207,3 +207,100 @@ export const mockAlerts: Alert[] = [
     isActive: true,
   },
 ];
+
+// Tagalog translations for alert content (keyed by alert ID)
+export const alertTranslations: Record<string, { title: string; description: string; recommendedActions: string[] }> = {
+  'alert-001': {
+    title: 'Bagyong Aghon - Senyas Bilang 4',
+    description:
+      'Tumindi ang Super Typhoon Aghon na may tuloy-tuloy na hangin na 185 kph at bugsong hanggang 230 kph. Ang bagyo ay kumikilos pa-kanluran-hilagang-kanluran sa bilis na 20 kph patungo sa Rehiyon ng Bicol. Inaasahan ang malakas na pag-ulan, mapanirang hangin, at storm surge na hanggang 3 metro sa mga baybaying lugar.',
+    recommendedActions: [
+      'Lumikas agad kung nasa baybay-dagat o mababang lugar',
+      'Itali o itago ang lahat ng mga bagay sa labas ng bahay',
+      'Mag-imbak ng pagkain, tubig, at gamot na sapat para sa 3 araw',
+      'I-charge ang lahat ng mga aparatong pangkomunikasyon',
+      'Regular na subaybayan ang opisyal na mga update ng PAGASA',
+      'Huwag subukang tumawid sa mga baha',
+    ],
+  },
+  'alert-002': {
+    title: 'Pagbaha sa Lambak ng Cagayan',
+    description:
+      'Matinding pagbaha ang naiulat sa buong Lambak ng Cagayan dahil sa tuloy-tuloy na malakas na pag-ulan sa nakalipas na 48 oras. Lumampas na sa kritikal na antas ang Ilog Cagayan. Maraming barangay sa Tuguegarao at Aparri ang lubog sa baha. Patuloy ang mga operasyon ng pagliligtas.',
+    recommendedActions: [
+      'Pumunta agad sa mataas na lugar',
+      'Iwasang maglakad o lumangoy sa baha',
+      'Mag-ingat sa mga nakalawit na linya ng kuryente',
+      'Makipag-ugnayan sa lokal na DRRMO para sa pagliligtas',
+      'Pakuluan o i-treat ang lahat ng inuming tubig',
+    ],
+  },
+  'alert-003': {
+    title: 'Lindol - Magnitude 5.8 sa Mindanao',
+    description:
+      'Isang lindol na magnitude 5.8 ang tumama 15 km timog-silangan ng Lungsod ng Davao sa lalim na 30 km. Inaasahan ang mga aftershock sa susunod na 24 oras. May naiulat na pinsala sa mga istruktura sa ilang barangay. Walang banta ng tsunami.',
+    recommendedActions: [
+      'Lumayo sa mga nasirang gusali',
+      'Suriin kung may gas leak bago bumalik sa mga istruktura',
+      'Maghanda para sa mga aftershock',
+      'Iulat ang pinsala sa mga istruktura sa lokal na awtoridad',
+      'Panatilihing madaling makuha ang mga emergency supplies',
+    ],
+  },
+  'alert-004': {
+    title: 'Bulkang Mayon - Alert Level 3',
+    description:
+      'Itinaas ng PHIVOLCS ang Bulkang Mayon sa Alert Level 3 (tumataas na posibilidad ng mapanganib na pagsabog). Nadagdagan ang emisyon ng sulfur dioxide at paglaki ng lava dome. Itinatag ang 6 na kilometrong danger zone sa paligid ng tuktok.',
+    recommendedActions: [
+      'Lumikas kung nasa loob ng 6-km permanent danger zone',
+      'Maghanda ng face mask para sa proteksyon laban sa ashfall',
+      'Manatili sa loob ng bahay habang may ashfall',
+      'Regular na subaybayan ang mga bulletin ng PHIVOLCS',
+      'Maghanda ng evacuation bag na may mga pangunahing pangangailangan',
+    ],
+  },
+  'alert-005': {
+    title: 'Abiso sa Pagbaha - NCR Metro Manila',
+    description:
+      'Naglabas ang PAGASA ng abiso sa pagbaha para sa Metro Manila dahil sa tuloy-tuloy na ulan ng habagat. Ang mga mababang lugar sa Marikina, Pasig, at Taguig ay nasa panganib. Papalapit na sa alarm stage ang antas ng mga ilog.',
+    recommendedActions: [
+      'Iwasan ang hindi kinakailangang paglalakbay',
+      'Maghanda ng mga sandbag kung nasa flood-prone area',
+      'Subaybayan ang mga update ng antas ng ilog mula sa PAGASA',
+      'Itago ang mahahalagang dokumento sa waterproof na bag',
+    ],
+  },
+  'alert-006': {
+    title: 'Tropical Depression Papalapit sa Visayas',
+    description:
+      'May natuklasang tropical depression na 800 km silangan ng Visayas at inaasahang titindi bilang tropical storm sa loob ng 24 oras. Ang mga lugar sa dadaanan ay dapat nang magsimulang maghanda.',
+    recommendedActions: [
+      'Subaybayan ang mga weather bulletin ng PAGASA',
+      'Itali ang mga kasangkapan at gamit sa labas ng bahay',
+      'Mag-imbak ng mga emergency supplies',
+      'Suriin ang plano ng pamilya para sa pag-likas',
+    ],
+  },
+  'alert-007': {
+    title: 'Abiso sa Lindol - Batangas',
+    description:
+      'Serye ng maliliit na lindol (M2.5-3.2) ang nadetect malapit sa rehiyon ng Bulkang Taal. Sinusubaybayan ng PHIVOLCS ang anumang hindi pangkaraniwang aktibidad ng bulkan. Walang agarang panganib ngunit dapat manatiling alerto ang mga residente.',
+    recommendedActions: [
+      'Manatiling may kaalaman sa pamamagitan ng mga update ng PHIVOLCS',
+      'Suriin ang mga pamamaraan sa kaligtasan sa lindol',
+      'I-secure ang mabibigat na kasangkapan sa mga pader',
+      'Alamin ang mga ligtas na lugar sa inyong tahanan (ilalim ng matibay na mesa)',
+    ],
+  },
+  'alert-008': {
+    title: 'Bulkang Taal - Alert Level 1',
+    description:
+      'Nananatili ang Bulkang Taal sa Alert Level 1 (mababang antas ng kaguluhan). May nadetect na mga volcanic earthquake at bahagyang pagbabago sa lupa. Ipinagbabawal ang pagpasok sa Taal Volcano Island.',
+    recommendedActions: [
+      'Huwag pumasok sa Taal Volcano Island',
+      'Sundin ang mga abiso ng PHIVOLCS',
+      'Maghanda ng mga protective mask sakaling may ashfall',
+      'Alamin ang inyong mga evacuation route',
+    ],
+  },
+};

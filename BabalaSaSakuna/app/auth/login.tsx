@@ -14,6 +14,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/contexts/AuthContext';
+import { localizationService } from '../../src/services';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert(localizationService.t('auth.error'), localizationService.t('auth.fillAllFields'));
       return;
     }
 
@@ -37,7 +38,7 @@ export default function LoginScreen() {
     if (result.success) {
       router.replace('/(tabs)');
     } else {
-      Alert.alert('Login Failed', result.error || 'Unable to sign in');
+      Alert.alert(localizationService.t('auth.loginFailed'), result.error || localizationService.t('auth.unableSignIn'));
     }
   };
 
@@ -58,7 +59,7 @@ export default function LoginScreen() {
         <View style={styles.header}>
           <MaterialCommunityIcons name="shield-alert" size={80} color="#2563eb" />
           <Text style={styles.title}>Babala sa Sakuna</Text>
-          <Text style={styles.subtitle}>Stay Safe, Stay Informed</Text>
+          <Text style={styles.subtitle}>{localizationService.t('auth.stayInformed')}</Text>
         </View>
 
         <View style={styles.form}>
@@ -66,7 +67,7 @@ export default function LoginScreen() {
             <MaterialCommunityIcons name="email" size={20} color="#64748b" />
             <TextInput
               style={styles.input}
-              placeholder="Email"
+              placeholder={localizationService.t('auth.email')}
               placeholderTextColor="#94a3b8"
               value={email}
               onChangeText={setEmail}
@@ -80,7 +81,7 @@ export default function LoginScreen() {
             <MaterialCommunityIcons name="lock" size={20} color="#64748b" />
             <TextInput
               style={styles.input}
-              placeholder="Password"
+              placeholder={localizationService.t('auth.password')}
               placeholderTextColor="#94a3b8"
               value={password}
               onChangeText={setPassword}
@@ -97,7 +98,7 @@ export default function LoginScreen() {
           </View>
 
           <TouchableOpacity onPress={handleForgotPassword}>
-            <Text style={styles.forgotPassword}>Forgot Password?</Text>
+            <Text style={styles.forgotPassword}>{localizationService.t('auth.forgotPassword')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -108,13 +109,13 @@ export default function LoginScreen() {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.loginButtonText}>Sign In</Text>
+              <Text style={styles.loginButtonText}>{localizationService.t('auth.signIn')}</Text>
             )}
           </TouchableOpacity>
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>OR</Text>
+            <Text style={styles.dividerText}>{localizationService.t('auth.or')}</Text>
             <View style={styles.dividerLine} />
           </View>
 
@@ -123,13 +124,13 @@ export default function LoginScreen() {
             onPress={handleSignUp}
             disabled={loading}
           >
-            <Text style={styles.signupButtonText}>Create New Account</Text>
+            <Text style={styles.signupButtonText}>{localizationService.t('auth.createAccount')}</Text>
           </TouchableOpacity>
 
           <View style={styles.guestContainer}>
-            <Text style={styles.guestText}>Or continue as </Text>
+            <Text style={styles.guestText}>{localizationService.t('auth.continueAs')}</Text>
             <TouchableOpacity onPress={() => router.replace('/(tabs)')}>
-              <Text style={styles.guestLink}>Guest</Text>
+              <Text style={styles.guestLink}>{localizationService.t('auth.guest')}</Text>
             </TouchableOpacity>
           </View>
         </View>

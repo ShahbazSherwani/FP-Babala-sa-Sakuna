@@ -9,13 +9,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ChecklistItem, ChecklistPhase } from '../../src/types';
-import { cacheService } from '../../src/services';
+import { cacheService, localizationService } from '../../src/services';
 import { ChecklistItemCard } from '../../src/components';
 
-const PHASES: { key: ChecklistPhase; label: string; icon: string }[] = [
-  { key: 'before', label: 'Before', icon: 'shield-check' },
-  { key: 'during', label: 'During', icon: 'alert' },
-  { key: 'after', label: 'After', icon: 'wrench' },
+const PHASES: { key: ChecklistPhase; icon: string }[] = [
+  { key: 'before', icon: 'shield-check' },
+  { key: 'during', icon: 'alert' },
+  { key: 'after', icon: 'wrench' },
 ];
 
 export default function ChecklistScreen() {
@@ -44,9 +44,9 @@ export default function ChecklistScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Emergency Checklist</Text>
+        <Text style={styles.headerTitle}>{localizationService.t('checklist.title')}</Text>
         <Text style={styles.headerSubtitle}>
-          {items.length} preparation steps • Works offline
+          {localizationService.t('checklist.subtitle')}
         </Text>
       </View>
 
@@ -69,7 +69,7 @@ export default function ChecklistScreen() {
                 color={isActive ? '#1E3A5F' : '#9CA3AF'}
               />
               <Text style={[styles.tabText, isActive && styles.tabTextActive]}>
-                {phase.label}
+                {localizationService.t(`checklist.phases.${phase.key}`)}
               </Text>
               <Text
                 style={[styles.tabCount, isActive && styles.tabCountActive]}
@@ -97,7 +97,7 @@ export default function ChecklistScreen() {
           />
         </View>
         <Text style={styles.progressText}>
-          {completedCount} of {totalCount} completed
+          {completedCount} {localizationService.t('checklist.of')} {totalCount} {localizationService.t('checklist.completed')}
         </Text>
       </View>
 

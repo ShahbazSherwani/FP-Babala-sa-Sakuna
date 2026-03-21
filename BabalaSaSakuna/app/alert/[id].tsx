@@ -13,7 +13,7 @@ import {
   SEVERITY_COLORS,
   CATEGORY_ICONS,
 } from '../../src/types';
-import { alertService } from '../../src/services';
+import { alertService, localizationService } from '../../src/services';
 import SeverityBadge from '../../src/components/SeverityBadge';
 
 export default function AlertDetailScreen() {
@@ -25,9 +25,9 @@ export default function AlertDetailScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.notFound}>
-          <Text style={styles.notFoundText}>Alert not found</Text>
+          <Text style={styles.notFoundText}>{localizationService.t('alertDetail.notFound')}</Text>
           <TouchableOpacity onPress={() => router.back()}>
-            <Text style={styles.backLink}>Go Back</Text>
+            <Text style={styles.backLink}>{localizationService.t('alertDetail.goBack')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -70,7 +70,7 @@ export default function AlertDetailScreen() {
           <Text style={styles.headerTitle}>{alert.title}</Text>
           <SeverityBadge severity={alert.severity} />
           <Text style={styles.headerTime}>
-            Updated: {formatDate(alert.updatedAt)}
+            {localizationService.t('alertDetail.updated')} {formatDate(alert.updatedAt)}
           </Text>
         </View>
       </View>
@@ -82,13 +82,13 @@ export default function AlertDetailScreen() {
       >
         {/* Description */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Description</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('alertDetail.description')}</Text>
           <Text style={styles.description}>{alert.description}</Text>
         </View>
 
         {/* Affected Regions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Affected Regions</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('alertDetail.affectedRegions')}</Text>
           {alert.affectedRegions.map((region, index) => (
             <View key={index} style={styles.regionItem}>
               <MaterialCommunityIcons
@@ -103,14 +103,14 @@ export default function AlertDetailScreen() {
 
         {/* Timing */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Timeline</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('alertDetail.timeline')}</Text>
           <View style={styles.timeRow}>
             <MaterialCommunityIcons
               name="clock-outline"
               size={16}
               color="#6B7280"
             />
-            <Text style={styles.timeLabel}>Issued:</Text>
+            <Text style={styles.timeLabel}>{localizationService.t('alertDetail.issued')}</Text>
             <Text style={styles.timeValue}>{formatDate(alert.timestamp)}</Text>
           </View>
           <View style={styles.timeRow}>
@@ -119,7 +119,7 @@ export default function AlertDetailScreen() {
               size={16}
               color="#6B7280"
             />
-            <Text style={styles.timeLabel}>Updated:</Text>
+            <Text style={styles.timeLabel}>{localizationService.t('alertDetail.updated')}</Text>
             <Text style={styles.timeValue}>
               {formatDate(alert.updatedAt)}
             </Text>
@@ -128,7 +128,7 @@ export default function AlertDetailScreen() {
 
         {/* Recommended Actions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recommended Actions</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('alertDetail.recommendedActions')}</Text>
           {alert.recommendedActions.map((action, index) => (
             <View key={index} style={styles.actionItem}>
               <View style={[styles.actionNumber, { backgroundColor: borderColor + '20' }]}>
@@ -152,7 +152,7 @@ export default function AlertDetailScreen() {
               size={20}
               color="#FFFFFF"
             />
-            <Text style={styles.actionBtnText}>View on Map</Text>
+            <Text style={styles.actionBtnText}>{localizationService.t('alertDetail.viewOnMap')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.actionBtn, { backgroundColor: '#16A34A' }]}
@@ -163,7 +163,7 @@ export default function AlertDetailScreen() {
               size={20}
               color="#FFFFFF"
             />
-            <Text style={styles.actionBtnText}>Open Checklist</Text>
+            <Text style={styles.actionBtnText}>{localizationService.t('alertDetail.openChecklist')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

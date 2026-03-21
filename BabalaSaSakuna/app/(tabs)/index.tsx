@@ -60,6 +60,9 @@ export default function DashboardScreen() {
   };
 
   const handleLanguageChange = () => {
+    // Reload alerts with new language translations
+    const data = alertService.getAlertsByCategory(activeFilter);
+    setAlerts(data);
     forceUpdate(prev => prev + 1);
   };
 
@@ -93,18 +96,21 @@ export default function DashboardScreen() {
   const renderHeader = () => (
     <View style={styles.headerContainer}>
       <View style={styles.header}>
-        <Text style={styles.appTitle}>{localizationService.t('dashboard.title')}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.appTitle}>{localizationService.t('dashboard.title')}</Text>
+          <TouchableOpacity
+            onPress={() => router.push('/auth/login')}
+            style={styles.loginBtn}
+          >
+            <MaterialCommunityIcons name="account-circle" size={30} color="#FFFFFF" />
+            <Text style={styles.loginLabel}>{localizationService.t('dashboard.loginLabel')}</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.subtitle}>
           {activeCount} {localizationService.t(activeCount === 1 ? 'dashboard.activeAlert' : 'dashboard.activeAlerts')}
         </Text>
       </View>
       <View style={styles.languageContainer}>
-        <TouchableOpacity
-          onPress={() => router.push('/auth/login')}
-          style={{ marginRight: 12 }}
-        >
-          <MaterialCommunityIcons name="account-circle" size={28} color="#2563eb" />
-        </TouchableOpacity>
         <LanguageSwitcher onLanguageChange={handleLanguageChange} />
       </View>
       <FilterChips
@@ -115,7 +121,7 @@ export default function DashboardScreen() {
         <View style={styles.infoBanner}>
           <MaterialCommunityIcons name="information" size={16} color="#2563EB" />
           <Text style={styles.infoBannerText}>
-            Push notifications require a development build
+            {localizationService.t('dashboard.notificationBanner')}
           </Text>
         </View>
       )}
@@ -215,6 +221,22 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#FFFFFF',
     letterSpacing: 0.5,
+    flex: 1,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  loginBtn: {
+    alignItems: 'center',
+    marginLeft: 12,
+  },
+  loginLabel: {
+    fontSize: 10,
+    color: '#93C5FD',
+    marginTop: 2,
+    fontWeight: '600',
   },
   subtitle: {
     fontSize: 14,

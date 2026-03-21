@@ -1,5 +1,6 @@
 import { Alert, HazardCategory, SeverityLevel, FilterOption } from '../types';
-import { mockAlerts } from '../data/alerts';
+import { mockAlerts, alertTranslations } from '../data/alerts';
+import { localizationService } from './LocalizationService';
 
 // Severity sort order (critical first)
 const SEVERITY_ORDER: Record<SeverityLevel, number> = {
@@ -13,12 +14,31 @@ class AlertService {
   private alerts: Alert[] = mockAlerts;
 
   /**
+   * Apply translations if current language is Tagalog
+   */
+  private localizeAlert(alert: Alert): Alert {
+    if (localizationService.getLanguage() === 'tl') {
+      const tl = alertTranslations[alert.id];
+      if (tl) {
+        return {
+          ...alert,
+          title: tl.title,
+          description: tl.description,
+          recommendedActions: tl.recommendedActions,
+        };
+      }
+    }
+    return alert;
+  }
+
+  /**
    * Get all active alerts, sorted by severity (most urgent first)
    */
   getAllAlerts(): Alert[] {
     return [...this.alerts]
       .filter((a) => a.isActive)
-      .sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity]);
+      .sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity])
+      .map((a) => this.localizeAlert(a));
   }
 
   /**
@@ -34,7 +54,8 @@ class AlertService {
    * Get a single alert by ID
    */
   getAlertById(id: string): Alert | undefined {
-    return this.alerts.find((a) => a.id === id);
+    const alert = this.alerts.find((a) => a.id === id);
+    return alert ? this.localizeAlert(alert) : undefined;
   }
 
   /**

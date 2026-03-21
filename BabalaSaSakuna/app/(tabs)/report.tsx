@@ -13,7 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ReportCategory, CommunityReport } from '../../src/types';
-import { cacheService } from '../../src/services';
+import { cacheService, localizationService } from '../../src/services';
 
 interface CategoryOption {
   key: ReportCategory;
@@ -22,12 +22,12 @@ interface CategoryOption {
 }
 
 const CATEGORIES: CategoryOption[] = [
-  { key: 'flooding', label: 'Flooding', icon: 'water' },
-  { key: 'road_blocked', label: 'Road Blocked', icon: 'road-variant' },
-  { key: 'structural_damage', label: 'Structural Damage', icon: 'home-alert' },
-  { key: 'landslide', label: 'Landslide', icon: 'terrain' },
-  { key: 'power_outage', label: 'Power Outage', icon: 'flash-off' },
-  { key: 'other', label: 'Other', icon: 'alert-circle' },
+  { key: 'flooding', label: 'report.categories.flooding', icon: 'water' },
+  { key: 'road_blocked', label: 'report.categories.road_blocked', icon: 'road-variant' },
+  { key: 'structural_damage', label: 'report.categories.structural_damage', icon: 'home-alert' },
+  { key: 'landslide', label: 'report.categories.landslide', icon: 'terrain' },
+  { key: 'power_outage', label: 'report.categories.power_outage', icon: 'flash-off' },
+  { key: 'other', label: 'report.categories.other', icon: 'alert-circle' },
 ];
 
 const MAX_DESCRIPTION = 500;
@@ -42,12 +42,12 @@ export default function ReportScreen() {
   const validate = (): boolean => {
     const newErrors: { category?: string; description?: string } = {};
     if (!selectedCategory) {
-      newErrors.category = 'Please select a report category';
+      newErrors.category = localizationService.t('report.errors.selectCategory');
     }
     if (!description.trim()) {
-      newErrors.description = 'Description is required';
+      newErrors.description = localizationService.t('report.errors.descriptionRequired');
     } else if (description.trim().length < 10) {
-      newErrors.description = 'Description must be at least 10 characters';
+      newErrors.description = localizationService.t('report.errors.descriptionTooShort');
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -81,7 +81,7 @@ export default function ReportScreen() {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Community Report</Text>
+          <Text style={styles.headerTitle}>{localizationService.t('report.title')}</Text>
         </View>
         <View style={styles.successContainer}>
           <MaterialCommunityIcons
@@ -89,13 +89,12 @@ export default function ReportScreen() {
             size={72}
             color="#16A34A"
           />
-          <Text style={styles.successTitle}>Report Submitted</Text>
+          <Text style={styles.successTitle}>{localizationService.t('report.submitted')}</Text>
           <Text style={styles.successText}>
-            Thank you for helping your community. Your report has been saved
-            locally and will be reviewed when connectivity allows.
+            {localizationService.t('report.thankYou')}
           </Text>
           <TouchableOpacity style={styles.newReportBtn} onPress={handleReset}>
-            <Text style={styles.newReportBtnText}>Submit Another Report</Text>
+            <Text style={styles.newReportBtnText}>{localizationService.t('report.submitAnother')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -105,9 +104,9 @@ export default function ReportScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Community Report</Text>
+        <Text style={styles.headerTitle}>{localizationService.t('report.title')}</Text>
         <Text style={styles.headerSubtitle}>
-          Report local hazards to help your community
+          {localizationService.t('report.subtitle')}
         </Text>
       </View>
 
@@ -122,7 +121,7 @@ export default function ReportScreen() {
           keyboardShouldPersistTaps="handled"
         >
           {/* Category Selection */}
-          <Text style={styles.sectionTitle}>Report Type *</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('report.reportType')} *</Text>
           <View style={styles.categoryGrid}>
             {CATEGORIES.map((cat) => {
               const isSelected = selectedCategory === cat.key;
@@ -150,7 +149,7 @@ export default function ReportScreen() {
                       isSelected && styles.categoryLabelSelected,
                     ]}
                   >
-                    {cat.label}
+                    {localizationService.t(cat.label)}
                   </Text>
                 </TouchableOpacity>
               );
@@ -161,20 +160,20 @@ export default function ReportScreen() {
           )}
 
           {/* Location */}
-          <Text style={styles.sectionTitle}>Location (Optional)</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('report.location')}</Text>
           <TextInput
             style={styles.textInput}
-            placeholder="e.g., Brgy. San Antonio, Makati City"
+            placeholder={localizationService.t('report.locationPlaceholder')}
             placeholderTextColor="#9CA3AF"
             value={location}
             onChangeText={setLocation}
           />
 
           {/* Description */}
-          <Text style={styles.sectionTitle}>Description *</Text>
+          <Text style={styles.sectionTitle}>{localizationService.t('report.description')} *</Text>
           <TextInput
             style={[styles.textInput, styles.textArea]}
-            placeholder="Describe the situation in detail..."
+            placeholder={localizationService.t('report.descriptionPlaceholder')}
             placeholderTextColor="#9CA3AF"
             value={description}
             onChangeText={(text) => {
@@ -197,20 +196,12 @@ export default function ReportScreen() {
 
           {/* Guidelines */}
           <View style={styles.guidelines}>
-            <Text style={styles.guidelinesTitle}>Reporting Guidelines</Text>
-            <Text style={styles.guidelineItem}>
-              • Be specific about the location and situation
-            </Text>
-            <Text style={styles.guidelineItem}>
-              • Do not share unverified or alarming information
-            </Text>
-            <Text style={styles.guidelineItem}>
-              • Reports are saved locally for now and may be shared with
-              authorities in future updates
-            </Text>
-            <Text style={styles.guidelineItem}>
-              • Your safety comes first — only report when safe to do so
-            </Text>
+            <Text style={styles.guidelinesTitle}>{localizationService.t('report.guidelines')}</Text>
+            {(localizationService.t('report.guidelineItems') as unknown as string[]).map((item: string, idx: number) => (
+              <Text key={idx} style={styles.guidelineItem}>
+                • {item}
+              </Text>
+            ))}
           </View>
 
           {/* Submit Button */}
@@ -224,7 +215,7 @@ export default function ReportScreen() {
             activeOpacity={0.8}
           >
             <MaterialCommunityIcons name="send" size={20} color="#FFFFFF" />
-            <Text style={styles.submitBtnText}>Submit Report</Text>
+            <Text style={styles.submitBtnText}>{localizationService.t('report.submitReport')}</Text>
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
