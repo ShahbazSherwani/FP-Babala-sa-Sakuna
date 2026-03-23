@@ -4,8 +4,6 @@
 **Institution**: University of London  
 **Course**: BSc Computer Science  
 **Module**: CM3070 Final Project  
-**Student**: [Your Name]  
-**Student ID**: [Your ID]
 
 ---
 
