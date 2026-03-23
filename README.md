@@ -4,35 +4,44 @@
 **Institution**: University of London  
 **Course**: BSc Computer Science  
 **Module**: CM3070 Final Project  
-**Submission Date**: February 2026
+**Student**: [Your Name]  
+**Student ID**: [Your ID]
 
 ---
 
 ## Project Overview
 
-**Babala sa Sakuna** (Tagalog: "Warning of Disaster") is a mobile disaster warning application designed for the Philippines. The app provides real-time disaster alerts, emergency preparedness checklists, hazard mapping, and community reporting features to help Filipinos prepare for and respond to natural disasters including typhoons, floods, earthquakes, and volcanic activity.
+**Babala sa Sakuna** (Tagalog: "Warning of Disaster") is a cross-platform mobile application designed to provide Filipino citizens with real-time disaster alerts, weather and air quality monitoring, emergency preparedness tools, community hazard reporting, and gamified educational content. The app addresses the "last mile" problem in Philippine disaster warning dissemination by delivering personalised, location-aware information directly to mobile devices.
 
 ### Key Features
-- **Real-time Disaster Alerts** with severity-based filtering
-- **Hazard Map** showing active disaster zones
-- **Emergency Checklist** (Before/During/After phases)
+- **Real-time Disaster Alerts** with severity-based filtering (Critical, High, Medium, Advisory)
+- **Weather and Air Quality Monitoring** via OpenWeatherMap and WAQI APIs
+- **Resource Hub** with nearby shelters, hospitals, and emergency services (GPS distance)
+- **Hazard Map** showing active disaster zones with severity indicators
+- **Emergency Checklist** covering Before, During, and After disaster phases (offline-capable)
 - **Community Reporting** for local hazard observations
-- **Bilingual Support** (English & Tagalog)
-- **Onboarding Guide** explaining alert severity levels
-- **Offline Support** for checklist and reports
+- **Missions and Badges** gamified disaster preparedness quizzes
+- **Full Bilingual Support** in English and Tagalog (all screens, alerts, and content)
+- **Firebase Authentication** with guest mode for Expo Go compatibility
+- **Offline Support** for checklist, reports, and language preferences
 
 ---
 
 ## Technical Stack
 
-- **Framework**: React Native with Expo SDK 54
-- **Language**: TypeScript (strict mode)
-- **Navigation**: Expo Router v6 (file-based routing)
-- **State Management**: React hooks with AsyncStorage
-- **UI Components**: Custom components with react-native-safe-area-context
-- **Internationalization**: i18n-js
-- **Maps**: react-native-maps (with Expo Go fallback)
-- **Notifications**: expo-notifications (development build only)
+| Technology | Purpose |
+|---|---|
+| React Native + Expo SDK 54 | Cross-platform mobile framework |
+| TypeScript (strict mode) | Type-safe development |
+| Expo Router v6 | File-based navigation with 7 tabs |
+| AsyncStorage | Offline data persistence |
+| i18n-js | Bilingual English/Tagalog support |
+| OpenWeatherMap API | Real-time weather data |
+| WAQI API | Air quality index (PSI) monitoring |
+| Google Maps Platform | Distance calculations and directions |
+| Firebase Authentication | User sign-in (stub mode for Expo Go) |
+| expo-notifications | Push notifications (development build) |
+| react-native-maps | Native map display (development build) |
 
 ---
 
@@ -40,28 +49,36 @@
 
 ```
 FP-Babala-sa-Sakuna/
-├── BabalaSaSakuna/           # Main application code
-│   ├── app/                  # Expo Router screens
-│   │   ├── (tabs)/          # Tab navigation screens
-│   │   │   ├── index.tsx    # Dashboard
-│   │   │   ├── map.tsx      # Hazard map
-│   │   │   ├── checklist.tsx # Emergency checklist
-│   │   │   └── report.tsx   # Community reporting
-│   │   ├── alert/[id].tsx   # Alert details (dynamic route)
-│   │   └── _layout.tsx      # Root layout
+├── BabalaSaSakuna/              # Main Expo application
+│   ├── app/                     # Expo Router screens
+│   │   ├── (tabs)/             # Tab navigation (7 screens)
+│   │   │   ├── index.tsx       # Dashboard
+│   │   │   ├── weather.tsx     # Weather and Air Quality
+│   │   │   ├── map.tsx         # Hazard Map
+│   │   │   ├── resources.tsx   # Resource Hub
+│   │   │   ├── checklist.tsx   # Emergency Checklist
+│   │   │   ├── missions.tsx    # Missions and Badges
+│   │   │   └── report.tsx      # Community Reporting
+│   │   ├── alert/[id].tsx      # Alert Detail (dynamic route)
+│   │   └── auth/               # Authentication screens
+│   │       ├── login.tsx
+│   │       ├── signup.tsx
+│   │       └── reset-password.tsx
 │   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── services/        # Business logic layer
-│   │   ├── data/            # Mock disaster data
-│   │   └── types/           # TypeScript definitions
-│   ├── assets/              # Images and icons
-│   ├── app.json             # Expo configuration
-│   ├── package.json         # Dependencies
-│   ├── tsconfig.json        # TypeScript config
-│   └── README.md            # Application documentation
-├── IMPROVEMENTS.md          # Detailed enhancement documentation
-├── CM3070 Preliminary Project Report-Final.pdf
-└── README.md                # This file
+│   │   ├── components/         # Reusable UI components
+│   │   ├── services/           # Business logic and API layer
+│   │   ├── contexts/           # React context (AuthContext)
+│   │   ├── config/             # Firebase configuration
+│   │   ├── data/               # Alert and checklist data
+│   │   └── types/              # TypeScript type definitions
+│   ├── assets/                 # Images and icons
+│   ├── app.json                # Expo configuration
+│   ├── package.json            # Dependencies
+│   └── tsconfig.json           # TypeScript configuration
+├── FINAL-REPORT.md             # CM3070 Final Project Report
+├── TESTING-GUIDE.md            # Testing documentation
+├── IMPROVEMENTS.md             # Enhancement documentation
+└── README.md                   # This file
 ```
 
 ---
@@ -71,10 +88,10 @@ FP-Babala-sa-Sakuna/
 ### Prerequisites
 - Node.js 18+ installed
 - npm or yarn
-- Expo Go app on your mobile device (iOS/Android)
-- *Optional*: Android Studio or Xcode for development builds
+- Expo Go app on your mobile device (iOS or Android)
+- Optional: Android Studio or Xcode for development builds
 
-### Installation & Running
+### Installation and Running
 
 1. **Clone the repository**
    ```bash
@@ -97,169 +114,136 @@ FP-Babala-sa-Sakuna/
    - Or press `a` for Android emulator, `i` for iOS simulator
 
 ### Expo Go Limitations
-Some features are limited in Expo Go:
-- **Push Notifications**: Requires development build (SDK 53+ restriction)
-- **Native Maps**: Shows list fallback instead of MapView
+Some features require a development build and are gracefully degraded in Expo Go:
+- **Push Notifications**: Stub mode prevents crashes; info banner shown to user
+- **Native Maps**: Fallback list view of hazard zones displayed instead
+- **Firebase Auth**: Operates in guest/stub mode automatically
 
 All other features work fully in Expo Go.
 
 ---
 
-## Documentation
-
-### Application Documentation
-- **[BabalaSaSakuna/README.md](BabalaSaSakuna/README.md)** - Comprehensive app documentation, API reference, project structure
-- **[IMPROVEMENTS.md](IMPROVEMENTS.md)** - Detailed explanation of implemented enhancements (onboarding, notifications, i18n)
-
-### Original Project Report
-- **[CM3070 Preliminary Project Report-Final.pdf](CM3070%20Preliminary%20Project%20Report-Final.pdf)** - Complete project specification, design, and evaluation
-
----
-
 ## Implemented Features
 
-### Core Features (All Working in Expo Go)
-**Dashboard Screen**
-- Real-time disaster alerts display
-- Filter by hazard type (Typhoon, Flood, Earthquake, Volcano)
-- Severity-based color coding (Critical/High/Medium/Low)
+### Dashboard
+- 8 disaster alerts sorted by severity (Critical first)
+- Filter chips for hazard categories (Typhoon, Flood, Earthquake, Volcano)
+- Severity-coded alert cards with descriptions and affected regions
 - Pull-to-refresh functionality
-- Navigation to detailed alert views
+- Login access via profile icon beside the app title
+- Language toggle (EN/TL) in header
 
-**Alert Details Screen**
-- Complete disaster information
-- Affected regions display
-- Recommended actions list
-- Quick navigation to hazard map and checklist
-- Formatted timestamps
+### Alert Details
+- Full alert description, affected regions, and timeline
+- Recommended safety actions with numbered steps
+- Quick navigation links to Hazard Map and Checklist
+- All content translates to Tagalog when TL is selected
 
-**Hazard Map Screen**
-- *Expo Go*: List view showing hazard zones with coordinates
-- *Dev Build*: Interactive native map with markers and regions
-- Severity-based color coding
-- Zone radius information
+### Weather and Air Quality
+- Real-time weather from OpenWeatherMap API
+- Air Quality Index (PSI) from WAQI API with colour-coded gauge
+- Disaster alert checking for the user's location
+- City-based WAQI lookup bounded to Philippine coordinates
 
-**Emergency Checklist Screen**
-- 39 preparedness items across 3 phases (Before/During/After)
-- Progress tracking per phase
-- Offline persistence with AsyncStorage
-- Priority level indicators
+### Resource Hub
+- Emergency services: shelters, evacuation centres, hospitals, fire stations, police
+- GPS-based distance calculation to each resource
+- One-tap Call and Directions buttons
+- Filter by resource type
+
+### Hazard Map
+- List view of active hazard zones with severity badges (Expo Go)
+- Native Google Map with markers and radius circles (development build)
+- Severity-coded legend
+
+### Emergency Checklist
+- 39 preparedness items across 3 phases (Before, During, After)
+- Progress bar with completion tracking
+- Offline persistence via AsyncStorage
 - Tab-based phase navigation
 
-**Community Report Screen**
-- 6 report categories with icons
-- Location input (optional)
-- Description textarea (500 char limit)
-- Form validation
-- Success confirmation
-- Local storage for offline reports
+### Missions and Badges
+- Educational quizzes on disaster preparedness topics
+- Point-based scoring with level progression
+- Badge unlocking system
+- Minimum score threshold to pass missions
 
-### Enhancement Features
-**Severity Guide Modal**
-- First-launch onboarding
-- Clear explanation of all 4 severity levels
-- Color-coded visual guide
-- "Don't show again" functionality
+### Community Reporting
+- 6 report categories: Flooding, Road Blocked, Structural Damage, Landslide, Power Outage, Other
+- Location and description input with validation
+- Reports saved locally for offline use
+- Success confirmation with option to submit another
 
-**Multilingual Support**
-- English/Tagalog language switching
-- 200+ translated UI strings
-- Instant language switching
-- Persistent language preference
-- Language switcher in Dashboard header
+### Bilingual Support
+- Full English and Tagalog translations across all 7 screens
+- All alert content (titles, descriptions, recommended actions) translated
+- Tab bar names, filter chips, buttons, error messages all localised
+- Auth screens (login, signup, reset password) fully translated
+- Instant language switching with persistent preference
 
-**Push Notifications** (Development Build Only)
-- Stub implementation for Expo Go (no crashes)
-- Full implementation available in `NotificationService.full.ts`
-- Permission handling
-- Push token registration
-- Deep linking from notifications
-- Info banner shows when unavailable
+### Authentication
+- Firebase email/password authentication
+- Sign up, sign in, and password reset flows
+- Guest mode (default in Expo Go)
+- Deferred Firebase initialisation to prevent Expo Go crashes
 
 ---
 
-## Testing & Validation
+## Testing and Validation
 
-### Build Verification
-TypeScript compilation: 0 errors  
-Android bundle export: 1559 modules  
-Tested on Android API 36 emulator  
-Expo Go compatibility verified  
-
-
-
-## Data & Privacy
-
-### Mock Data
-The application currently uses mock data for demonstration:
-- 8 sample disaster alerts covering all hazard types
-- 39 emergency checklist items
-- Philippine coordinates and region names
-
-### Data Persistence
-- **AsyncStorage** for offline data (checklist state, reports, preferences)
-- No external API calls in current prototype
-- All data stored locally on device
-
-### Future Integration
-Ready for Phase 2 backend integration with:
-- PAGASA (Philippine weather service) APIs
-- PHIVOLCS (Philippine seismology agency)
-- Local government alert systems
+- TypeScript compilation: 0 errors
+- Android bundle export: 1559 modules
+- Tested on Android API 36 emulator
+- Expo Go compatibility verified
+- All 7 tabs and auth flow functional
 
 ---
 
-## Academic Context
+## Service Architecture
 
-This project fulfills the requirements for CM3070 Final Project, demonstrating:
+The app uses a singleton service pattern:
 
-### Technical Skills
-- Cross-platform mobile development
-- TypeScript and type-safe programming
-- Component-based architecture
-- State management and data persistence
-- Internationalization and localization
-- Graceful degradation for platform limitations
-- Service-oriented architecture
-
-### Project Management
-- Requirements analysis from PDF specification
-- Iterative development with version control
-- Problem-solving (Expo Go compatibility challenges)
-- Documentation and code maintainability
-- Testing and quality assurance
-
-### Social Impact
-- Addresses real-world problem (disaster preparedness in Philippines)
-- Culturally appropriate design (bilingual, local hazard types)
-- Accessibility considerations (severity guide, clear UI)
-- Offline-first approach for reliability
+| Service | Responsibility |
+|---|---|
+| AlertService | Alert data with language-aware content |
+| WeatherService | OpenWeatherMap API integration |
+| ApiClient | HTTP requests with retry logic and 30-min TTL cache |
+| LocationService | GPS coordinates bounded to Philippines |
+| LocalizationService | i18n-js bilingual management (EN/TL) |
+| CacheService | AsyncStorage persistence for checklist, reports |
+| NotificationService | Push notifications with stub/full pattern |
+| FirebaseService | Deferred Firebase initialisation |
+| AuthService | Authentication with guest mode fallback |
+| MissionService | Quiz scoring and badge management |
+| ResourceService | Emergency service data with distance calculations |
+| AlertPollingService | Periodic alert checking with in-app notifications |
 
 ---
 
-## Known Limitations & Future Work
+## Known Limitations
 
-### Current Limitations
-1. **Mock Data**: Uses static disaster alerts (no real-time API integration)
+1. **Mock Alert Data**: Uses 8 static disaster alerts (real-time PAGASA integration planned)
 2. **Expo Go Restrictions**: Push notifications and native maps require development build
-3. **Single Platform Testing**: Primarily tested on Android
-4. **Limited Languages**: Only English and Tagalog (Cebuano, Ilocano planned)
+3. **Single Platform Testing**: Primarily tested on Android emulator
+4. **Firebase Stub Mode**: Authentication and Firestore operate in stub mode in Expo Go
 
-### Planned Enhancements (Phase 2)
-- Backend API integration with Philippine disaster agencies
-- User authentication and profile management
-- Historical disaster data visualization
-- Community verification system for reports
+---
+
+## Future Work
+
+- Real-time integration with PAGASA and PHIVOLCS APIs
+- Backend infrastructure with Firebase Cloud Functions
+- Community report verification system
 - SMS fallback for areas with limited internet
-- Additional Philippine languages
+- Additional Philippine languages (Cebuano, Ilocano)
+- Geofencing for automatic location-based alerts
 - iOS comprehensive testing
-- Geofencing for location-based alerts
+- Admin dashboard for alert management
 
 ---
 
 ## Dependencies
 
-### Main Dependencies
 ```json
 {
   "expo": "~54.0.0",
@@ -269,7 +253,8 @@ This project fulfills the requirements for CM3070 Final Project, demonstrating:
   "expo-location": "~19.0.8",
   "expo-notifications": "~0.29.12",
   "i18n-js": "^4.4.3",
-  "@react-native-async-storage/async-storage": "2.2.0"
+  "@react-native-async-storage/async-storage": "2.2.0",
+  "firebase": "^11.9.0"
 }
 ```
 
@@ -279,10 +264,10 @@ Full dependency list in [BabalaSaSakuna/package.json](BabalaSaSakuna/package.jso
 
 ## Acknowledgments
 
-- **University of London** - CM3070 Final Project guidance
-- **Expo Team** - Excellent documentation and development tools
-- **Philippine Agencies** - Hazard data research (PAGASA, PHIVOLCS)
-- **React Native Community** - Open-source components and libraries
+- University of London - CM3070 Final Project guidance
+- Expo Team - Development framework and documentation
+- Philippine Agencies - Hazard data research (PAGASA, PHIVOLCS)
+- React Native Community - Open-source components and libraries
 
 ---
 
@@ -290,7 +275,7 @@ Full dependency list in [BabalaSaSakuna/package.json](BabalaSaSakuna/package.jso
 
 This project is an academic submission for educational purposes.
 
-**Academic Use Only** - Not for commercial distribution.
+Academic Use Only - Not for commercial distribution.
 
 ---
 
