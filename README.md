@@ -1,8 +1,6 @@
 # Babala sa Sakuna
 ## CM3070 Final Project - Philippine Disaster Warning Mobile Application
 
-**Student**: [Your Name]  
-**Student ID**: [Your ID]  
 **Institution**: University of London  
 **Course**: BSc Computer Science  
 **Module**: CM3070 Final Project  
@@ -10,22 +8,22 @@
 
 ---
 
-## 📱 Project Overview
+## Project Overview
 
 **Babala sa Sakuna** (Tagalog: "Warning of Disaster") is a mobile disaster warning application designed for the Philippines. The app provides real-time disaster alerts, emergency preparedness checklists, hazard mapping, and community reporting features to help Filipinos prepare for and respond to natural disasters including typhoons, floods, earthquakes, and volcanic activity.
 
 ### Key Features
-- 🚨 **Real-time Disaster Alerts** with severity-based filtering
-- 🗺️ **Hazard Map** showing active disaster zones
-- ✅ **Emergency Checklist** (Before/During/After phases)
-- 📝 **Community Reporting** for local hazard observations
-- 🌐 **Bilingual Support** (English & Tagalog)
-- 📚 **Onboarding Guide** explaining alert severity levels
-- 💾 **Offline Support** for checklist and reports
+- **Real-time Disaster Alerts** with severity-based filtering
+- **Hazard Map** showing active disaster zones
+- **Emergency Checklist** (Before/During/After phases)
+- **Community Reporting** for local hazard observations
+- **Bilingual Support** (English & Tagalog)
+- **Onboarding Guide** explaining alert severity levels
+- **Offline Support** for checklist and reports
 
 ---
 
-## 🏗️ Technical Stack
+## Technical Stack
 
 - **Framework**: React Native with Expo SDK 54
 - **Language**: TypeScript (strict mode)
@@ -38,7 +36,7 @@
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 FP-Babala-sa-Sakuna/
@@ -68,7 +66,7 @@ FP-Babala-sa-Sakuna/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -99,7 +97,7 @@ FP-Babala-sa-Sakuna/
    - Or press `a` for Android emulator, `i` for iOS simulator
 
 ### Expo Go Limitations
-⚠️ Some features are limited in Expo Go:
+Some features are limited in Expo Go:
 - **Push Notifications**: Requires development build (SDK 53+ restriction)
 - **Native Maps**: Shows list fallback instead of MapView
 
@@ -107,7 +105,7 @@ All other features work fully in Expo Go.
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 ### Application Documentation
 - **[BabalaSaSakuna/README.md](BabalaSaSakuna/README.md)** - Comprehensive app documentation, API reference, project structure
@@ -118,37 +116,37 @@ All other features work fully in Expo Go.
 
 ---
 
-## ✨ Implemented Features
+## Implemented Features
 
 ### Core Features (All Working in Expo Go)
-✅ **Dashboard Screen**
+**Dashboard Screen**
 - Real-time disaster alerts display
 - Filter by hazard type (Typhoon, Flood, Earthquake, Volcano)
 - Severity-based color coding (Critical/High/Medium/Low)
 - Pull-to-refresh functionality
 - Navigation to detailed alert views
 
-✅ **Alert Details Screen**
+**Alert Details Screen**
 - Complete disaster information
 - Affected regions display
 - Recommended actions list
 - Quick navigation to hazard map and checklist
 - Formatted timestamps
 
-✅ **Hazard Map Screen**
+**Hazard Map Screen**
 - *Expo Go*: List view showing hazard zones with coordinates
 - *Dev Build*: Interactive native map with markers and regions
 - Severity-based color coding
 - Zone radius information
 
-✅ **Emergency Checklist Screen**
+**Emergency Checklist Screen**
 - 39 preparedness items across 3 phases (Before/During/After)
 - Progress tracking per phase
 - Offline persistence with AsyncStorage
 - Priority level indicators
 - Tab-based phase navigation
 
-✅ **Community Report Screen**
+**Community Report Screen**
 - 6 report categories with icons
 - Location input (optional)
 - Description textarea (500 char limit)
@@ -157,20 +155,20 @@ All other features work fully in Expo Go.
 - Local storage for offline reports
 
 ### Enhancement Features
-✅ **Severity Guide Modal**
+**Severity Guide Modal**
 - First-launch onboarding
 - Clear explanation of all 4 severity levels
 - Color-coded visual guide
 - "Don't show again" functionality
 
-✅ **Multilingual Support**
+**Multilingual Support**
 - English/Tagalog language switching
 - 200+ translated UI strings
 - Instant language switching
 - Persistent language preference
 - Language switcher in Dashboard header
 
-⚠️ **Push Notifications** (Development Build Only)
+**Push Notifications** (Development Build Only)
 - Stub implementation for Expo Go (no crashes)
 - Full implementation available in `NotificationService.full.ts`
 - Permission handling
@@ -180,29 +178,17 @@ All other features work fully in Expo Go.
 
 ---
 
-## 🧪 Testing & Validation
+## Testing & Validation
 
 ### Build Verification
-✅ TypeScript compilation: 0 errors  
-✅ Android bundle export: 1559 modules  
-✅ Tested on Android API 36 emulator  
-✅ Expo Go compatibility verified  
+TypeScript compilation: 0 errors  
+Android bundle export: 1559 modules  
+Tested on Android API 36 emulator  
+Expo Go compatibility verified  
 
-### Feature Testing
-| Feature | Expo Go | Dev Build |
-|---------|---------|-----------|
-| Dashboard & Alerts | ✅ | ✅ |
-| Alert Details | ✅ | ✅ |
-| Checklist | ✅ | ✅ |
-| Community Reports | ✅ | ✅ |
-| Language Switching | ✅ | ✅ |
-| Severity Guide | ✅ | ✅ |
-| Hazard Map | ⚠️ List view | ✅ Native map |
-| Push Notifications | ⚠️ Stub | ✅ Full support |
 
----
 
-## 🔐 Data & Privacy
+## Data & Privacy
 
 ### Mock Data
 The application currently uses mock data for demonstration:
@@ -223,7 +209,7 @@ Ready for Phase 2 backend integration with:
 
 ---
 
-## 📚 Academic Context
+## Academic Context
 
 This project fulfills the requirements for CM3070 Final Project, demonstrating:
 
@@ -251,7 +237,7 @@ This project fulfills the requirements for CM3070 Final Project, demonstrating:
 
 ---
 
-## 🚧 Known Limitations & Future Work
+## Known Limitations & Future Work
 
 ### Current Limitations
 1. **Mock Data**: Uses static disaster alerts (no real-time API integration)
@@ -271,7 +257,7 @@ This project fulfills the requirements for CM3070 Final Project, demonstrating:
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 ### Main Dependencies
 ```json
@@ -291,7 +277,7 @@ Full dependency list in [BabalaSaSakuna/package.json](BabalaSaSakuna/package.jso
 
 ---
 
-## 🤝 Acknowledgments
+## Acknowledgments
 
 - **University of London** - CM3070 Final Project guidance
 - **Expo Team** - Excellent documentation and development tools
@@ -300,7 +286,7 @@ Full dependency list in [BabalaSaSakuna/package.json](BabalaSaSakuna/package.jso
 
 ---
 
-## 📄 License
+## License
 
 This project is an academic submission for educational purposes.
 
@@ -308,28 +294,4 @@ This project is an academic submission for educational purposes.
 
 ---
 
-## 👤 Contact
-
-**Student**: [Your Name]  
-**Email**: [Your Email]  
-**GitHub**: [ShahbazSherwani](https://github.com/ShahbazSherwani)  
 **Repository**: https://github.com/ShahbazSherwani/FP-Babala-sa-Sakuna
-
----
-
-## 📝 Submission Checklist
-
-✅ Complete source code in repository  
-✅ README with setup instructions  
-✅ Documentation of features and architecture  
-✅ Working prototype (tested in Expo Go)  
-✅ TypeScript compilation with 0 errors  
-✅ Original project report included  
-✅ Planned improvements implemented and documented  
-✅ Known limitations clearly stated  
-✅ Git history showing development process  
-
----
-
-**Last Updated**: February 8, 2026  
-**Project Status**: ✅ Complete and ready for submission
